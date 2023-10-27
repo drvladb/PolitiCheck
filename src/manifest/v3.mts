@@ -15,7 +15,7 @@ const manifest: ManifestTypeV3 = {
   web_accessible_resources: [
     {
       resources: ["public/*", "assets/*"],
-      matches: ["<all_urls>"],
+      matches: ["<all_urls>"], // https://example.com
     },
   ],
 };

@@ -1,8 +1,8 @@
 try {
   chrome.devtools.panels.create(
-    "Dev Tools",
+    "PolitiCheckr",
     "icon-34.png",
-    "src/pages/panel/index.html"
+    "src/pages/panel/index.html" //  
   );
 } catch (e) {
   console.error(e);

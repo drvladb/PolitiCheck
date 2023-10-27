@@ -44,7 +44,7 @@ function getManifestV2(pageDirMap: { [x: string]: any }): ManifestTypeV2 {
   if (pages.indexOf("content") > -1) {
     manifest.content_scripts = [
       {
-        matches: ["http://*/*", "https://*/*", "<all_urls>"],
+        matches: ["http://*/*", "https://*/*", "<all_urls>"], //  "https://example.com"
         js: [pageDirMap["content"]],
         css: pageDirMap["content-css"],
         run_at: "document_start",

@@ -246,10 +246,14 @@ function BuildManifest(version: 2 | 3, pageDirMap: { [x: string]: any }) {
 
   const manifest = getManifest(version, pageDistMap);
 
+  // Fix: make manefests load when building on windows machines (\\ -> /)
+  const stManifest = JSON.stringify(manifest, null, 2).replaceAll("\\\\", "/");
+
   fs.writeFileSync(
     resolve(extDir, "manifest.json"),
-    JSON.stringify(manifest, null, 2),
+    stManifest,
   );
+
 
   console.timeEnd(prompt);
 }

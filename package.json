@@ -1,12 +1,12 @@
 {
-  "name": "browser-extension",
-  "displayName": "Browser Extension",
-  "version": "2.0.0",
-  "description": "Browser Extension Boilerplate",
+  "name": "politichecker",
+  "displayName": "Politics Checker",
+  "version": "1.0.0",
+  "description": "Check your news for political bias",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/debdut/browser-extension.git"
+    "url": "https://github.com/drvladb/PolitiCheck.git"
   },
   "scripts": {
     "start": "ts-node-esm scripts/build.ts --dev",
