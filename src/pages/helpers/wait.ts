@@ -1,5 +1,5 @@
-const wait = (seconds: number) => {
-    return new Promise(vars => setTimeout(vars, seconds));
+const wait = (ms: number) => {
+    return new Promise( resolve => setTimeout(resolve, ms) );
 }
 
 export { wait }
