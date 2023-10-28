@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@pages/helpers/firebase";
 
 // @ts-ignore - image exists
 import github from "@assets/img/github.svg";
@@ -7,6 +9,24 @@ import github from "@assets/img/github.svg";
 import google from "@assets/img/google.svg";
 
 export default function Options(): JSX.Element {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [errorMsg, setErrorMsg] = useState<string>("");
+
+  const submitForm = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user)
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setErrorMsg(errorMessage);
+      });
+  };
+
   return (
     <>
       <main>
@@ -17,6 +37,17 @@ export default function Options(): JSX.Element {
               <div className="w-full lg:w-4/12 px-4">
                 <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
                   <div className="rounded-t mb-0 px-6 py-6">
+                    {errorMsg !== "" ? (
+                      <div className="text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-500">
+                        <span className="inline-block align-middle mr-8">
+                          {errorMsg}
+                          {/* <b className="capitalize">Error!</b> */}
+                        </span>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+
                     <div className="text-center mb-3">
                       <h6 className="text-blueGray-500 text-sm font-bold">
                         Sign in with
@@ -56,6 +87,7 @@ export default function Options(): JSX.Element {
                           type="email"
                           className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                           placeholder="Email"
+                          onChange={(v) => setEmail(v.target.value)}
                         />
                       </div>
 
@@ -70,6 +102,7 @@ export default function Options(): JSX.Element {
                           type="password"
                           className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                           placeholder="Password"
+                          onChange={(v) => setPassword(v.target.value)}
                         />
                       </div>
                       <div>
@@ -89,6 +122,7 @@ export default function Options(): JSX.Element {
                         <button
                           className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                           type="button"
+                          onClick={submitForm}
                         >
                           Sign In
                         </button>
