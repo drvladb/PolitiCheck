@@ -17,6 +17,8 @@ npm run build [browser]
 # npm run build chrome firefox safari
 ```
 
+If you see an error about `/dist/v2` being missing, running the command again will resolve the issue.
+
 ## Credits
 
 Project by Kevin Hwang, Vladimir Bondar, and Ben DeBear.

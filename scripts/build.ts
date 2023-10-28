@@ -299,15 +299,57 @@ const changeCssFiles = () => {
   const directoryPath = "./dist/v2";
 
   findStyles(directoryPath, (stylePath: string) => {
-    console.log("Found:", stylePath);
-    console.log(
-      stylePath,
-      [...stylePath.split("\\").slice(0, -1), "index.css"].join("\\"),
-    ); // windows only quick fix
+    console.log("Found (css):", stylePath);
+    // console.log(
+    //   stylePath,
+    //   [...stylePath.split("\\").slice(0, -1), "index.css"].join("\\"),
+    // ); // windows only quick fix
 
     fs.renameSync(
       stylePath,
       [...stylePath.split("\\").slice(0, -1), "index.css"].join("\\"),
+    );
+  });
+};
+
+const changeHtmlFiles = () => {
+  const findHtml = (
+    directoryPath: string,
+    callback: (filePath: string) => void,
+  ) => {
+    const filesNames = fs.readdirSync(directoryPath);
+
+    for (const fileName of filesNames) {
+      const filePath = path.join(directoryPath, fileName);
+      const fileStat = fs.statSync(filePath);
+      if (fileStat.isFile()) {
+        const fileExtension = path.extname(fileName);
+        if (
+          fileExtension === ".html" &&
+          (filePath.includes("login") || filePath.includes("register"))
+        ) {
+          callback(filePath);
+        }
+        continue;
+      }
+      if (fileStat.isDirectory()) {
+        findHtml(filePath, callback);
+      }
+    }
+  };
+
+  const directoryPath = "./dist/v2";
+
+  findHtml(directoryPath, (stylePath: string) => {
+    console.log("Found (html):", stylePath);
+    // console.log(
+    //   stylePath,
+    //   [...stylePath.split("\\").slice(0, -1), "index.html"].join("\\"),
+    // ); // windows only quick fix
+
+    fs.renameSync(
+      stylePath,
+      [...stylePath.split("\\").slice(0, -1), "index.html"].join("\\"),
     );
   });
 };
@@ -340,6 +382,9 @@ async function BuildVersionedExt(versions: (2 | 3)[], dev: boolean = false) {
 
   console.log("Correcting CSS!");
   changeCssFiles();
+
+  console.log("Correcting HTML!");
+  changeHtmlFiles();
 }
 
 function Clean(version?: 2 | 3) {
