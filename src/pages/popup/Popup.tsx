@@ -1,25 +1,21 @@
 import React from "react";
-
-import logo from "@assets/img/logo.svg";
+// @ts-ignore - it exists
+import logo from "@assets/img/logo.png"
+import DefaultLanding from "@components/DefaultLanding/DefaultLanding";
 
 export default function Popup(): JSX.Element {
+  // chrome.storage.local.get(["key"]).then((result) => {
+  //   console.log("Value currently is " + result.key);
+  // });
+  
   return (
-    <div className="absolute top-0 left-0 right-0 bottom-0 text-center h-full p-3 bg-gray-800">
-      <header className="flex flex-col items-center justify-center text-white">
-        <img src={logo} className="h-36 pointer-events-none animate-spin-slow" alt="logo" />
-        <p>
-          Edit <code>src/pages/popup/Popup.jsx</code> and save to reload. Popup page!4
-        </p>
-        <a
-          className="text-blue-400"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React!
-        </a>
-        <p>Popup styled with TailwindCSS!</p>
-      </header>
+    <div style={{width: "300px", height: "200px"}}>
+      <DefaultLanding />
+      <div className="flex items-center justify-center">
+            <img src={logo} alt="PolitiCheck Logo" style={{width: "100px"}} />
+            <h1 className="text-white font-semibold text-5xl">PolitiCheck</h1>
+            <p className="mt-4 text-lg text-blueGray-200">Please login to get started.</p>
+        </div>
     </div>
   );
 }

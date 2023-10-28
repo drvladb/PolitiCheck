@@ -10,11 +10,13 @@
   },
   "scripts": {
     "start": "ts-node-esm scripts/build.ts --dev",
-    "build": "ts-node-esm scripts/build.ts"
+    "build": "ts-node-esm scripts/build.ts",
+    "winbuild": "powershell rm .\\dist -r -fo; npm run build firefox; npm run build firefox"
   },
   "type": "module",
   "dependencies": {
     "@types/webextension-polyfill": "^0.10.0",
+    "firebase": "^10.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "webextension-polyfill": "^0.10.0"

@@ -56,6 +56,8 @@ function getManifestV2(pageDirMap: { [x: string]: any }): ManifestTypeV2 {
     manifest.devtools_page = pageDirMap["devtools"];
   }
 
+  manifest.permissions = ["background", "activeTab", "storage", "tabs"] // get the permissions we need
+
   return manifest;
 }
 
