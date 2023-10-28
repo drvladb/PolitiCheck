@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 import { basename, dirname, relative, resolve, sep } from "path";
 import { fileURLToPath } from "url";
 import { createRequire } from "node:module";
@@ -273,6 +274,44 @@ async function BuildPages(version: 2 | 3,  pageDirMap: { [x: string]: any }, dev
   await Promise.all(promises);
 }
 
+// from https://github.com/Debdut/browser-extension/issues/21
+const changeCssFiles = () => {
+  const findStyles = (
+    directoryPath: string,
+    callback: (filePath: string) => void
+  ) => {
+    const filesNames = fs.readdirSync(directoryPath);
+
+    for (const fileName of filesNames) {
+      const filePath = path.join(directoryPath, fileName);
+      const fileStat = fs.statSync(filePath);
+      if (fileStat.isFile()) {
+        const fileExtension = path.extname(fileName);
+        if (fileExtension === ".css") {
+          callback(filePath);
+        }
+        continue;
+      }
+      if (fileStat.isDirectory()) {
+        findStyles(filePath, callback);
+      }
+    }
+  };
+
+  const directoryPath = "./dist/v2";
+
+  findStyles(directoryPath, (stylePath: string) => {
+    console.log("Found:", stylePath);
+    console.log(stylePath,
+      [...stylePath.split("\\").slice(0, -1), "index.css"].join("\\")) // windows only quick fix
+
+    fs.renameSync(
+      stylePath,
+      [...stylePath.split("\\").slice(0, -1), "index.css"].join("\\")
+    );
+  });
+};
+
 async function BuildVersionedExt(versions: (2 | 3)[], dev: boolean = false) {
   const pageDirMap = getPageDirMap();
 
@@ -298,6 +337,9 @@ async function BuildVersionedExt(versions: (2 | 3)[], dev: boolean = false) {
   for (const v of versions.slice(0, 2)) {
     BuildManifest(v, pageDirMap);
   }
+
+  console.log("Correcting CSS!");
+  changeCssFiles();
 }
 
 function Clean(version?: 2 | 3) {
