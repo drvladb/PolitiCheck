@@ -1,5 +1,5 @@
 import { createRequire } from "node:module";
-import { ManifestTypeV3 } from './v3-type.mjs';
+import { ManifestTypeV3 } from "./v3-type.mjs";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../../package.json");
@@ -26,45 +26,45 @@ function getManifestV3(pageDirMap: { [x: string]: any }): ManifestTypeV3 {
   if (pages.length === 0) {
     return manifest;
   }
-  
+
   if (pages.indexOf("options") > -1) {
     manifest.options_ui = {
       page: pageDirMap["options"],
     };
   }
-  
+
   if (pages.indexOf("background") > -1) {
     manifest.background = {
       service_worker: pageDirMap["background"],
       type: "module",
     };
   }
-  
+
   if (pages.indexOf("popup") > -1) {
     manifest.action = {
       default_popup: pageDirMap["popup"],
       default_icon: "public/icon-34.png",
     };
   }
-  
+
   if (pages.indexOf("newtab") > -1) {
     manifest.chrome_url_overrides = {
       newtab: pageDirMap["newtab"],
     };
   }
-  
+
   if (pages.indexOf("bookmarks") > -1) {
     manifest.chrome_url_overrides = {
       bookmarks: pageDirMap["bookmarks"],
     };
   }
-  
+
   if (pages.indexOf("history") > -1) {
     manifest.chrome_url_overrides = {
       history: pageDirMap["history"],
     };
   }
-  
+
   if (pages.indexOf("content") > -1) {
     manifest.content_scripts = [
       {
@@ -75,12 +75,12 @@ function getManifestV3(pageDirMap: { [x: string]: any }): ManifestTypeV3 {
       },
     ];
   }
-  
+
   if (pages.indexOf("devtools") > -1) {
     manifest.devtools_page = pageDirMap["devtools"];
   }
 
-  manifest.permissions = ["background", "activeTab", "storage", "tabs"] // get the permissions we need
+  manifest.permissions = ["background", "activeTab", "storage", "tabs"]; // get the permissions we need
 
   return manifest;
 }

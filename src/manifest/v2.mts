@@ -1,5 +1,5 @@
 import { createRequire } from "node:module";
-import { ManifestTypeV2 } from './v2-type.mjs';
+import { ManifestTypeV2 } from "./v2-type.mjs";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../../package.json");
@@ -56,7 +56,7 @@ function getManifestV2(pageDirMap: { [x: string]: any }): ManifestTypeV2 {
     manifest.devtools_page = pageDirMap["devtools"];
   }
 
-  manifest.permissions = ["background", "activeTab", "storage", "tabs"] // get the permissions we need
+  manifest.permissions = ["background", "activeTab", "storage", "tabs"]; // get the permissions we need
 
   return manifest;
 }

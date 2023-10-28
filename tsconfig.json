@@ -21,8 +21,8 @@
       "@assets/*": ["src/assets/*"],
       "@components/*": ["src/components/*"],
       "@pages/*": ["src/pages/*"],
-      "@lib/*": ["src/lib/*"],
+      "@lib/*": ["src/lib/*"]
     }
   },
-  "include": ["src", "scripts"],
+  "include": ["src", "scripts"]
 }

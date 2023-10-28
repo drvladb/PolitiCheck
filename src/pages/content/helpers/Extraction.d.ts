@@ -1,4 +1,4 @@
 export type Extraction = {
-    state: "success" | "failure" | "unsupported"
-    content?: string
-}
+  state: "success" | "failure" | "unsupported";
+  content?: string;
+};

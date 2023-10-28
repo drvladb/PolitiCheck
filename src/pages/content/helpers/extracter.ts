@@ -1,5 +1,5 @@
-import { Extraction } from "./Extraction"
-import { cnnExtractor } from "./extracters/cnn"
+import { Extraction } from "./Extraction";
+import { cnnExtractor } from "./extracters/cnn";
 import { foxNewsExtractor } from "./extracters/foxnews";
 import { msnExtractor } from "./extracters/msn";
 import { nytimesExtractor } from "./extracters/nytimes";
@@ -12,24 +12,24 @@ import { nytimesExtractor } from "./extracters/nytimes";
  * @returns Extraction type: {supported, pageContent}
  */
 const extractText = (webHost: string, pageContent: Document): Extraction => {
-    switch (webHost) {
-        case "edition.cnn.com":
-        case "www.cnn.com": {
-            return cnnExtractor(pageContent);
-        }
-        case "www.msn.com": {
-            return msnExtractor(pageContent);
-        }
-        case "www.nytimes.com": {
-            return nytimesExtractor(pageContent);
-        }
-        case "www.foxnews.com": {
-            return foxNewsExtractor(pageContent);
-        }
+  switch (webHost) {
+    case "edition.cnn.com":
+    case "www.cnn.com": {
+      return cnnExtractor(pageContent);
     }
-    return {
-        state: "unsupported"
+    case "www.msn.com": {
+      return msnExtractor(pageContent);
     }
-}
+    case "www.nytimes.com": {
+      return nytimesExtractor(pageContent);
+    }
+    case "www.foxnews.com": {
+      return foxNewsExtractor(pageContent);
+    }
+  }
+  return {
+    state: "unsupported",
+  };
+};
 
-export {extractText}
+export { extractText };

@@ -91,18 +91,20 @@ function buildPage(name: string, entry: string, outdir: string, dev = false) {
 
     return buildHtmlPage(name, entry, outdir, dev);
   }
-  
-  if (ext === "ts"
-   || ext === "tsx"
-   || ext === "js"
-   || ext === "jsx") {
+
+  if (ext === "ts" || ext === "tsx" || ext === "js" || ext === "jsx") {
     return buildJSPage(name, entry, outdir, dev);
   }
 
   throw new Error(`Unknown entry point extension: ${entry} ${ext}`);
 }
 
-async function buildHtmlPage(name: string, entry: string, outdir: string, dev = false) {
+async function buildHtmlPage(
+  name: string,
+  entry: string,
+  outdir: string,
+  dev = false,
+) {
   const prompt = `Building "${name}" from ${entry}`;
   console.time(prompt);
 
@@ -131,21 +133,26 @@ async function buildHtmlPage(name: string, entry: string, outdir: string, dev = 
             require("tailwindcss"),
             require("autoprefixer"),
           ],
-        }
+        },
       }),
     ],
   });
 
   console.timeEnd(prompt);
-  
+
   return out;
 }
 
-async function buildJSPage(name: string, entry: string, outdir: string, dev: boolean = false) {
+async function buildJSPage(
+  name: string,
+  entry: string,
+  outdir: string,
+  dev: boolean = false,
+) {
   const prompt = `Building "${name}" from ${entry}:`;
   console.time(prompt);
 
-  const out =  await build({
+  const out = await build({
     entryPoints: [entry],
     bundle: true,
     outdir: resolve(outdir, name),
@@ -167,7 +174,7 @@ async function buildJSPage(name: string, entry: string, outdir: string, dev: boo
             require("tailwindcss"),
             require("autoprefixer"),
           ],
-        }
+        },
       }),
     ],
   });
@@ -181,12 +188,10 @@ function getDistPagePath(name: string, path: string, version: 2 | 3): string {
   // src/pages/popup/index.html -> dist/v3/popup/index-<hash>.html
   const fileName = basename(path);
   const ext = getExtension(fileName);
-  const distExt = (ext === "html") ? "html" : "js";
+  const distExt = ext === "html" ? "html" : "js";
   const fileNameWOExt = getName(fileName);
-  const regex = new RegExp(
-    `${fileNameWOExt}(-[A-z0-9]*)?\.${distExt}`
-  );
-  
+  const regex = new RegExp(`${fileNameWOExt}(-[A-z0-9]*)?\.${distExt}`);
+
   const extDir = resolve(OutDir, `v${version}`);
   const pageDir = resolve(extDir, name);
   const pageFiles = fs.readdirSync(pageDir);
@@ -194,10 +199,7 @@ function getDistPagePath(name: string, path: string, version: 2 | 3): string {
   if (!pageFile) {
     throw new Error(`Could not find generated entry for page ${name}`);
   }
-  return relative(
-    extDir,
-    resolve(pageDir, pageFile)
-  );
+  return relative(extDir, resolve(pageDir, pageFile));
 }
 
 function getDistCSSPath(name: string, path: string, version: 2 | 3): string[] {
@@ -208,9 +210,7 @@ function getDistCSSPath(name: string, path: string, version: 2 | 3): string[] {
 
   for (const file of pageFiles) {
     if (file.endsWith(".css")) {
-      cssPaths.push(relative(
-        extDir, resolve(pageDir, file)
-      ));
+      cssPaths.push(relative(extDir, resolve(pageDir, file)));
     }
   }
 
@@ -250,25 +250,23 @@ function BuildManifest(version: 2 | 3, pageDirMap: { [x: string]: any }) {
   // Fix: make manefests load when building on windows machines (\\ -> /)
   const stManifest = JSON.stringify(manifest, null, 2).replaceAll("\\\\", "/");
 
-  fs.writeFileSync(
-    resolve(extDir, "manifest.json"),
-    stManifest,
-  );
-
+  fs.writeFileSync(resolve(extDir, "manifest.json"), stManifest);
 
   console.timeEnd(prompt);
 }
 
-async function BuildPages(version: 2 | 3,  pageDirMap: { [x: string]: any }, dev: boolean = false) {
+async function BuildPages(
+  version: 2 | 3,
+  pageDirMap: { [x: string]: any },
+  dev: boolean = false,
+) {
   const extDir = resolve(OutDir, `v${version}`);
   const promises: Promise<any>[] = [];
 
   for (const [name, entry] of Object.entries(pageDirMap)) {
     const entryRelative = relative(RootDir, entry);
 
-    promises.push(
-      buildPage(name, entryRelative, extDir, dev)
-    );
+    promises.push(buildPage(name, entryRelative, extDir, dev));
   }
 
   await Promise.all(promises);
@@ -278,7 +276,7 @@ async function BuildPages(version: 2 | 3,  pageDirMap: { [x: string]: any }, dev
 const changeCssFiles = () => {
   const findStyles = (
     directoryPath: string,
-    callback: (filePath: string) => void
+    callback: (filePath: string) => void,
   ) => {
     const filesNames = fs.readdirSync(directoryPath);
 
@@ -302,12 +300,14 @@ const changeCssFiles = () => {
 
   findStyles(directoryPath, (stylePath: string) => {
     console.log("Found:", stylePath);
-    console.log(stylePath,
-      [...stylePath.split("\\").slice(0, -1), "index.css"].join("\\")) // windows only quick fix
+    console.log(
+      stylePath,
+      [...stylePath.split("\\").slice(0, -1), "index.css"].join("\\"),
+    ); // windows only quick fix
 
     fs.renameSync(
       stylePath,
-      [...stylePath.split("\\").slice(0, -1), "index.css"].join("\\")
+      [...stylePath.split("\\").slice(0, -1), "index.css"].join("\\"),
     );
   });
 };
@@ -330,7 +330,7 @@ async function BuildVersionedExt(versions: (2 | 3)[], dev: boolean = false) {
     version = versions[1];
     fse.copySync(
       resolve(OutDir, `v${versions[0]}`),
-      resolve(OutDir, `v${version}`)
+      resolve(OutDir, `v${version}`),
     );
   }
 
@@ -385,12 +385,18 @@ async function DevVersionedExt(versions: (2 | 3)[]) {
     }
 
     if (event == "remove") {
-      console.log("Removed public file or folder: ", filePath.replace(RootDir, "").substring(1));
+      console.log(
+        "Removed public file or folder: ",
+        filePath.replace(RootDir, "").substring(1),
+      );
       return;
     }
 
     fse.copySync(filePath, outFile);
-    console.log("Copied public file or folder: ", filePath.replace(RootDir, "").substring(1));
+    console.log(
+      "Copied public file or folder: ",
+      filePath.replace(RootDir, "").substring(1),
+    );
 
     console.log("Watching for changes...\n");
   });
@@ -398,16 +404,13 @@ async function DevVersionedExt(versions: (2 | 3)[]) {
   watch(SrcDir, { recursive: true }, async (event, filePath) => {
     const relativeFilePath = filePath.replace(SrcDir + sep, "");
 
-    let root = [relativeFilePath
-      .split(sep)[0]];
-    
-    if (root[0] === "pages") {
-      root.push(relativeFilePath
-        .split(sep)[1]);
+    let root = [relativeFilePath.split(sep)[0]];
 
-      const isDir = fs.lstatSync(resolve(SrcDir, ...root))
-        .isDirectory();
-      
+    if (root[0] === "pages") {
+      root.push(relativeFilePath.split(sep)[1]);
+
+      const isDir = fs.lstatSync(resolve(SrcDir, ...root)).isDirectory();
+
       if (!isDir) {
         return;
       }
@@ -425,12 +428,7 @@ async function DevVersionedExt(versions: (2 | 3)[]) {
 
       fse.removeSync(resolve(extDir, root[1]));
 
-      await buildPage(
-        root[1],
-        entryRelative,
-        extDir,
-        true
-      );
+      await buildPage(root[1], entryRelative, extDir, true);
 
       if (versions.length === 1) {
         return;
@@ -442,7 +440,7 @@ async function DevVersionedExt(versions: (2 | 3)[]) {
 
       fse.copySync(
         resolve(OutDir, `v${versions[0]}`, root[1]),
-        resolve(OutDir, `v${version}`, root[1])
+        resolve(OutDir, `v${version}`, root[1]),
       );
 
       console.log("Watching for changes...\n");
@@ -464,40 +462,37 @@ function manifestVersion(browser: BrowserPath): 2 | 3 {
   return 2;
 }
 
-function GetArgs(): { browsers: string[], dev: boolean } {
+function GetArgs(): { browsers: string[]; dev: boolean } {
   if (process.argv.length < 3) {
     console.log("Usage: npm run build [<browser>...]");
     process.exit(1);
   }
-  
+
   // TODO: A non-crude way to run : npm run start with no browsers.
   // if (process.argv[2] === "--dev"
   //   && process.argv.length < 4) {
   //   console.log("Usage: npm run start [<browser>...]");
   //   process.exit(0);
   // }
-  
+
   let browsers: string[];
   let dev = false;
-  
+
   if (process.argv[2] === "--dev") {
-    browsers = process.argv
-      .splice(3);
+    browsers = process.argv.splice(3);
     dev = true;
   } else {
-    browsers = process.argv
-      .splice(2);
+    browsers = process.argv.splice(2);
   }
-  
+
   // uniq browsers
-  browsers = browsers
-    .reduce((acc, browser) => {
-      const browserName = browser.toLowerCase();
-      if (acc.indexOf(browserName) === -1) {
-        acc.push(browserName);
-      }
-      return acc;
-    }, [] as string[]);
+  browsers = browsers.reduce((acc, browser) => {
+    const browserName = browser.toLowerCase();
+    if (acc.indexOf(browserName) === -1) {
+      acc.push(browserName);
+    }
+    return acc;
+  }, [] as string[]);
 
   return {
     browsers,
@@ -508,7 +503,7 @@ function GetArgs(): { browsers: string[], dev: boolean } {
 function MatchInstalledBrowsers(browsers: string[]) {
   const availableBrowsers = GetInstalledBrowsers();
   const matchedBrowsers: BrowserPath[] = [];
-  
+
   for (const availableBrowser of availableBrowsers) {
     const availableBrowserName = toKebabCase(availableBrowser.name);
     for (const browser of browsers) {
@@ -522,7 +517,7 @@ function MatchInstalledBrowsers(browsers: string[]) {
 }
 
 function MatchExtVersions(browsers: BrowserPath[]) {
-  const versions: Set<2|3> = new Set();
+  const versions: Set<2 | 3> = new Set();
 
   for (const browser of browsers) {
     versions.add(manifestVersion(browser));
@@ -640,7 +635,10 @@ function DevBrowserExt(browsers: string[]) {
   const commands: string[] = [];
 
   for (const matchedBrowser of matchedBrowsers) {
-    const profileDir = createProfile(toKebabCase(matchedBrowser.name), profileRoot);
+    const profileDir = createProfile(
+      toKebabCase(matchedBrowser.name),
+      profileRoot,
+    );
     const command = LaunchCommand(matchedBrowser, profileDir);
 
     if (command) {

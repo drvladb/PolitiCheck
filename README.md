@@ -1,4 +1,5 @@
 # Politics Checker
+
 Check your news for political bias. Conveniently packaged in a browser extension.
 
 ## Getting Started
@@ -27,6 +28,7 @@ Some web resources (MIT License): https://github.com/creativetimofficial/notus-n
 Released under the MIT License.
 
 ### Images
+
 1. Elephant and Donkey - Public Domain - NOT USED
 2. Eagle - Creative Commons, [source](https://www.deviantart.com/kingofcong/art/Centrist-logo-119282984)
 3. Font: Open Sans
