@@ -1,4 +1,5 @@
 import { Extraction } from "../Extraction";
+import {genericCleaner} from "./helpers"
 
 const msnExtractor = (pageContent: Document): Extraction => {
   return { state: "unsupported" };
@@ -7,10 +8,10 @@ const msnExtractor = (pageContent: Document): Extraction => {
   // @ts-ignore not sure why
   const articleText = article.innerText.replaceAll("\n", " ");
 
-  return {
-    state: "success",
-    content: articleText,
-  };
+  // return {
+  //   state: "success",
+  //   content: articleText,
+  // };
 };
 
 export { msnExtractor };
