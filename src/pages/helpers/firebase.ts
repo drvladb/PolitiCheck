@@ -1,10 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { Auth, User, getAuth, reload } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -21,6 +18,33 @@ const app = initializeApp(firebaseConfig);
 
 // login handlers
 const auth = getAuth(app);
+
+type AuthState = {
+  isLoggedIn: boolean
+  auth: Auth
+  user?: User
+}
+
+const oGetAuth = async (): Promise<AuthState> => {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get(["user"], (d) => { 
+      // reload(d["user"])
+      if (d["user"]) {
+        resolve({
+          isLoggedIn: true,
+          user: d["user"],
+          auth
+        })
+      } else {
+        resolve({
+          isLoggedIn: false,
+          auth
+        })
+      }
+    })
+  })
+}
+
 const firestore = getFirestore(app);
 
-export { app, auth, firestore };
+export { app, oGetAuth as getAuth, firestore };
