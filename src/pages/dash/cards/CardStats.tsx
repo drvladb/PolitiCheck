@@ -10,7 +10,7 @@ export default function CardStats({
   statDescripiron,
   icon,
   statIconColor,
-  showPct = true
+  showPct = true,
 }: any) {
   return (
     <>
@@ -32,7 +32,11 @@ export default function CardStats({
                   statIconColor
                 }
               >
-                {icon ? <img src={icon} alt={"icon"} className={statIconColor} /> : <></>}
+                {icon ? (
+                  <img src={icon} alt={"icon"} className={statIconColor} />
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           </div>
@@ -47,7 +51,8 @@ export default function CardStats({
                     : ""
                 }
               ></i>{" "}
-              {statPercent}{showPct ? "%" : ""}
+              {statPercent}
+              {showPct ? "%" : ""}
             </span>
             <span className="whitespace-nowrap">{statDescripiron}</span>
           </p>

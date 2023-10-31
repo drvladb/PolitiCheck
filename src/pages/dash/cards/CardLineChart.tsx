@@ -2,7 +2,6 @@ import React from "react";
 // @ts-ignore no type def ok (old version)
 import Chart from "chart.js";
 
-
 export default function CardLineChart() {
   React.useEffect(() => {
     var config = {

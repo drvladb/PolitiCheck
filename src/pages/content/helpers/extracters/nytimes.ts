@@ -1,5 +1,5 @@
 import { Extraction } from "../Extraction";
-import {genericCleaner} from "./helpers"
+import { genericCleaner } from "./helpers";
 
 const nytimesExtractor = (pageContent: Document): Extraction => {
   const article = document.getElementsByName("articleBody")[0];
@@ -14,7 +14,7 @@ const nytimesExtractor = (pageContent: Document): Extraction => {
     state: "success",
     article: {
       title: titleText,
-      content: articleText
+      content: articleText,
     },
   };
 };

@@ -1,7 +1,7 @@
 export type Extraction = {
   state: "success" | "failure" | "unsupported";
   article?: {
-    title: string
+    title: string;
     content: string;
-  }
+  };
 };

@@ -13,47 +13,61 @@ export default function PopupDash(): JSX.Element {
       // must be logged in
       if (!s.user) return;
       getUserData(s.user, firestore).then((qs) => {
-        const data = qs.data()
+        const data = qs.data();
         if (!data) return; // should never happen
-        const stats = data.stats.lifetime
+        const stats = data.stats.lifetime;
         const sum = stats.conservative + stats.neutral + stats.liberal;
         setUserData({
           conservative: stats.conservative,
-          conservativePct: nanify((stats.conservative / sum * 100).toFixed(1)),
+          conservativePct: nanify(
+            ((stats.conservative / sum) * 100).toFixed(1),
+          ),
           neutral: stats.neutral,
-          neutralPct: nanify((stats.neutral / sum * 100).toFixed(1)),
+          neutralPct: nanify(((stats.neutral / sum) * 100).toFixed(1)),
           liberal: stats.liberal,
-          liberalPct: nanify((stats.liberal / sum * 100).toFixed(1)),
-        })
+          liberalPct: nanify(((stats.liberal / sum) * 100).toFixed(1)),
+        });
       });
-    })
+    });
     testConnectivity()
       .then((d) => {
-        console.log(d)
-        setPredictorOnline(true)
+        console.log(d);
+        setPredictorOnline(true);
       })
       .catch((e) => {
-        console.error(e)
-        setPredictorOnline(false)
-      })
-  }, [])
-  
+        console.error(e);
+        setPredictorOnline(false);
+      });
+  }, []);
+
   return (
     <div className="flex items-center justify-center w-screen h-screen bg-slate-800">
       <div className="flex flex-col items-center justify-center h-max w-max">
         <p className="text-2xl text-slate-100">Stats (Lifetime)</p>
         <div className="flex items-stretch justify-between w-max m-10 mb-0 mt-0">
           <div className="flex flex-col items-center justify-center bg-red-500 w-20 h-20 m-5 rounded-lg border-2 border-black">
-            <p className="text-xl m-0 p-0 text-slate-100 font-bold">{userData?.conservative ?? ""}</p>
-            <p className="text-xs m-0 p-0 text-slate-200 font-semibold">Conservative</p>
+            <p className="text-xl m-0 p-0 text-slate-100 font-bold">
+              {userData?.conservative ?? ""}
+            </p>
+            <p className="text-xs m-0 p-0 text-slate-200 font-semibold">
+              Conservative
+            </p>
           </div>
           <div className="flex flex-col items-center justify-center bg-gray-500 w-20 h-20 m-5 rounded-lg border-2 border-black">
-            <p className="text-xl m-0 p-0 text-slate-100 font-bold">{userData?.neutral ?? ""}</p>
-            <p className="text-xs m-0 p-0 text-slate-200 font-semibold">Neutral</p>
+            <p className="text-xl m-0 p-0 text-slate-100 font-bold">
+              {userData?.neutral ?? ""}
+            </p>
+            <p className="text-xs m-0 p-0 text-slate-200 font-semibold">
+              Neutral
+            </p>
           </div>
           <div className="flex flex-col items-center justify-center bg-blue-500 w-20 h-20 m-5 rounded-lg border-2 border-black">
-            <p className="text-xl m-0 p-0 text-slate-100 font-bold">{userData?.liberal ?? ""}</p>
-            <p className="text-xs m-0 p-0 text-slate-200 font-semibold">Liberal</p>
+            <p className="text-xl m-0 p-0 text-slate-100 font-bold">
+              {userData?.liberal ?? ""}
+            </p>
+            <p className="text-xs m-0 p-0 text-slate-200 font-semibold">
+              Liberal
+            </p>
           </div>
         </div>
         <button

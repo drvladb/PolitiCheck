@@ -11,7 +11,11 @@ import { nyTimesInjector } from "./injectors/nytimes";
  * @param pageContent Page content object
  * @returns None
  */
-const injectBadge = (webHost: string, bias: "neutral" | "conservative" | "liberal", pageContent: Document): void => {
+const injectBadge = (
+  webHost: string,
+  bias: "neutral" | "conservative" | "liberal",
+  pageContent: Document,
+): void => {
   switch (webHost) {
     case "edition.cnn.com":
     case "www.cnn.com": {
@@ -20,11 +24,11 @@ const injectBadge = (webHost: string, bias: "neutral" | "conservative" | "libera
     }
     case "www.nytimes.com": {
       nyTimesInjector(bias, pageContent);
-      break
+      break;
     }
     case "www.foxnews.com": {
       foxNewsInjector(bias, pageContent);
-      break
+      break;
     }
   }
 };

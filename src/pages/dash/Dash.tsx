@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { getAuth } from "@pages/helpers/firebase";
-import {HeaderStats, Navbar} from "./elements";
-import { CardBarChart, CardLineChart, CardRecentArticles, CardSocialTraffic } from "./cards";
+import { HeaderStats, Navbar } from "./elements";
+import {
+  CardBarChart,
+  CardLineChart,
+  CardRecentArticles,
+  CardSocialTraffic,
+} from "./cards";
 
 export default function Dash(): JSX.Element {
-
   return (
     <>
       <div className="relative bg-slate-100 h-full">

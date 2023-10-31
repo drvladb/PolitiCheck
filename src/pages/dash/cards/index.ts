@@ -5,4 +5,11 @@ import CardSettings from "./CardSettings";
 import CardSocialTraffic from "./CardSocialTraffic";
 import CardStats from "./CardStats";
 
-export {CardBarChart, CardLineChart, CardRecentArticles, CardSettings, CardSocialTraffic, CardStats}
+export {
+  CardBarChart,
+  CardLineChart,
+  CardRecentArticles,
+  CardSettings,
+  CardSocialTraffic,
+  CardStats,
+};

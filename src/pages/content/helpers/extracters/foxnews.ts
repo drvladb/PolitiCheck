@@ -2,7 +2,7 @@ import { Extraction } from "../Extraction";
 import { genericCleaner } from "./helpers";
 
 const foxNewsExtractor = (pageContent: Document): Extraction => {
-  const article = pageContent.getElementsByClassName("article-body")[0]; 
+  const article = pageContent.getElementsByClassName("article-body")[0];
   const title = pageContent.getElementsByClassName("headline")[0];
   if (!article) return { state: "failure" };
   // @ts-ignore not sure why
@@ -14,7 +14,7 @@ const foxNewsExtractor = (pageContent: Document): Extraction => {
     state: "success",
     article: {
       title: titleText,
-      content: articleText
+      content: articleText,
     },
   };
 };

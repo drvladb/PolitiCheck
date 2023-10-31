@@ -5,7 +5,7 @@ import { firestore, getAuth } from "@src/pages/helpers/firebase";
 import { testConnectivity } from "@src/pages/helpers/api";
 
 // @ts-ignore Img declare ok
-import neutralGray from "@assets/img/neutral_grayt.png"
+import neutralGray from "@assets/img/neutral_grayt.png";
 import { getUserData } from "@src/pages/helpers/firestore";
 import { UserData, nanify } from "./helpers";
 
@@ -17,32 +17,34 @@ export default function HeaderStats() {
       // must be logged in
       if (!s.user) return;
       getUserData(s.user, firestore).then((qs) => {
-        const data = qs.data()
+        const data = qs.data();
         if (!data) return; // should never happen
-        const stats = data.stats.lifetime
+        const stats = data.stats.lifetime;
         const sum = stats.conservative + stats.neutral + stats.liberal;
         setUserData({
           conservative: stats.conservative,
-          conservativePct: nanify((stats.conservative / sum * 100).toFixed(1)),
+          conservativePct: nanify(
+            ((stats.conservative / sum) * 100).toFixed(1),
+          ),
           neutral: stats.neutral,
-          neutralPct: nanify((stats.neutral / sum * 100).toFixed(1)),
+          neutralPct: nanify(((stats.neutral / sum) * 100).toFixed(1)),
           liberal: stats.liberal,
-          liberalPct: nanify((stats.liberal / sum * 100).toFixed(1)),
-        })
+          liberalPct: nanify(((stats.liberal / sum) * 100).toFixed(1)),
+        });
       });
-    })
+    });
     testConnectivity()
       .then((d) => {
-        console.log(d)
-        setPredictorOnline(true)
+        console.log(d);
+        setPredictorOnline(true);
       })
       .catch((e) => {
-        console.error(e)
-        setPredictorOnline(false)
-      })
-  }, [])
+        console.error(e);
+        setPredictorOnline(false);
+      });
+  }, []);
 
-  console.log(userData)
+  console.log(userData);
 
   return (
     <>
@@ -91,13 +93,25 @@ export default function HeaderStats() {
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
                   statSubtitle="Predictor"
-                  statTitle={predictorOnline === null ? "Checking" : (predictorOnline ? "Online" : "Offline")}
+                  statTitle={
+                    predictorOnline === null
+                      ? "Checking"
+                      : predictorOnline
+                      ? "Online"
+                      : "Offline"
+                  }
                   statArrow=""
                   statPercent=""
                   statPercentColor=""
                   statDescripiron=""
                   icon={null}
-                  statIconColor={predictorOnline === null ? "bg-gray-500" : (predictorOnline ? "bg-green-500" : "bg-red-500")}
+                  statIconColor={
+                    predictorOnline === null
+                      ? "bg-gray-500"
+                      : predictorOnline
+                      ? "bg-green-500"
+                      : "bg-red-500"
+                  }
                   showPct={false}
                 />
               </div>

@@ -8,15 +8,13 @@ export default function Popup(): JSX.Element {
   const [authStatus, setAuthStatus] = useState<AuthState | null>();
   useEffect(() => {
     getAuth().then((s) => {
-      setAuthStatus(s)
-    })
-  }, [])
+      setAuthStatus(s);
+    });
+  }, []);
 
-  if (authStatus == null) return <p>Loading</p>
+  if (authStatus == null) return <p>Loading</p>;
   if (!authStatus?.isLoggedIn || !authStatus.user) {
-    return (
-      <LoginCTA />
-    );
+    return <LoginCTA />;
   }
-  return <PopupDash />
+  return <PopupDash />;
 }

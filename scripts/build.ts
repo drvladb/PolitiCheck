@@ -326,7 +326,9 @@ const changeHtmlFiles = () => {
         const fileExtension = path.extname(fileName);
         if (
           fileExtension === ".html" &&
-          (filePath.includes("login") || filePath.includes("register")  || filePath.includes("dash"))
+          (filePath.includes("login") ||
+            filePath.includes("register") ||
+            filePath.includes("dash"))
         ) {
           callback(filePath);
         }

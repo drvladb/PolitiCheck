@@ -1,5 +1,5 @@
 import { Extraction } from "../Extraction";
-import {genericCleaner} from "./helpers"
+import { genericCleaner } from "./helpers";
 
 const cnnExtractor = (pageContent: Document): Extraction => {
   const article = pageContent.getElementsByClassName("article__content")[0];
@@ -14,7 +14,7 @@ const cnnExtractor = (pageContent: Document): Extraction => {
     state: "success",
     article: {
       title: titleText,
-      content: articleText
+      content: articleText,
     },
   };
 };

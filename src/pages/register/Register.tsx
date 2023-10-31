@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import {firestore, getAuth} from "@pages/helpers/firebase"
+import { firestore, getAuth } from "@pages/helpers/firebase";
 
 // @ts-ignore - image exists
 import github from "@assets/img/github.svg";
@@ -17,28 +17,32 @@ export default function Options(): JSX.Element {
 
   const submitForm = () => {
     getAuth().then((s) => {
-    createUserWithEmailAndPassword(s.auth, email, password)
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        // @ts-ignore
-        updateProfile(auth.currentUser, {
-          displayName: name
-        }).then(() => {
-          checkUserData(user, firestore).then(() => {
-            chrome.storage.local.set({ user: s.auth.currentUser }, function () {
-              console.log("User data has been stored in storage");
-              window.location.href = window.location.origin + "/dash/index.html"
+      createUserWithEmailAndPassword(s.auth, email, password)
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          // @ts-ignore
+          updateProfile(auth.currentUser, {
+            displayName: name,
+          }).then(() => {
+            checkUserData(user, firestore).then(() => {
+              chrome.storage.local.set(
+                { user: s.auth.currentUser },
+                function () {
+                  console.log("User data has been stored in storage");
+                  window.location.href =
+                    window.location.origin + "/dash/index.html";
+                },
+              );
             });
           });
         })
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setErrorMsg(errorMessage)
-      });
-    })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMsg(errorMessage);
+        });
+    });
   };
   return (
     <>
@@ -50,7 +54,7 @@ export default function Options(): JSX.Element {
               <div className="w-full lg:w-6/12 px-4">
                 <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-slate-200 border-0">
                   <div className="rounded-t mb-0 px-6 py-6">
-                  {errorMsg !== "" ? (
+                    {errorMsg !== "" ? (
                       <div className="text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-500">
                         <span className="inline-block align-middle mr-8">
                           {errorMsg}

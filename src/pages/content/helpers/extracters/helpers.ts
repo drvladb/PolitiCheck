@@ -1,5 +1,5 @@
 const genericCleaner = (v: string) => {
-    return v.replaceAll("\n", " ").replaceAll("  ", " ");
-}
+  return v.replaceAll("\n", " ").replaceAll("  ", " ");
+};
 
-export {genericCleaner}
+export { genericCleaner };

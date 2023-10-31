@@ -20,30 +20,30 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 export type AuthState = {
-  isLoggedIn: boolean
-  auth: Auth
-  user?: User
-}
+  isLoggedIn: boolean;
+  auth: Auth;
+  user?: User;
+};
 
 const oGetAuth = async (): Promise<AuthState> => {
   return new Promise((resolve, reject) => {
-    chrome.storage.local.get(["user"], (d) => { 
+    chrome.storage.local.get(["user"], (d) => {
       // reload(d["user"])
       if (d["user"]) {
         resolve({
           isLoggedIn: true,
           user: d["user"],
-          auth
-        })
+          auth,
+        });
       } else {
         resolve({
           isLoggedIn: false,
-          auth
-        })
+          auth,
+        });
       }
-    })
-  })
-}
+    });
+  });
+};
 
 const firestore = getFirestore(app);
 

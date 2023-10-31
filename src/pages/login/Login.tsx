@@ -17,35 +17,36 @@ export default function Options(): JSX.Element {
   useEffect(() => {
     getAuth().then((s) => {
       if (s.isLoggedIn) {
-        window.location.href = window.location.origin + "/dash/index.html"
-        return
+        window.location.href = window.location.origin + "/dash/index.html";
+        return;
       }
     });
-  }, [])
+  }, []);
 
   const submitForm = () => {
     getAuth().then((s) => {
       if (s.isLoggedIn) {
-        window.location.href = window.location.origin + "/dash/index.html"
-        return
+        window.location.href = window.location.origin + "/dash/index.html";
+        return;
       }
       signInWithEmailAndPassword(s.auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        checkUserData(user, firestore).then(() => {
-          chrome.storage.local.set({ user: s.auth.currentUser }, function () {
-            console.log("User data has been stored in storage");
-            window.location.href = window.location.origin + "/dash/index.html"
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          checkUserData(user, firestore).then(() => {
+            chrome.storage.local.set({ user: s.auth.currentUser }, function () {
+              console.log("User data has been stored in storage");
+              window.location.href =
+                window.location.origin + "/dash/index.html";
+            });
           });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMsg(errorMessage);
         });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setErrorMsg(errorMessage);
-      });
-    })
+    });
   };
 
   return (
@@ -162,10 +163,7 @@ export default function Options(): JSX.Element {
                     </a>
                   </div>
                   <div className="w-1/2 text-right">
-                    <a
-                      href="/register/index.html"
-                      className="text-slate-200"
-                    >
+                    <a href="/register/index.html" className="text-slate-200">
                       Create new account
                     </a>
                   </div>

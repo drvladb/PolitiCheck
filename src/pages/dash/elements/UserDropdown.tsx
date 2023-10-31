@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { createPopper } from "@popperjs/core";
 // @ts-ignore Img declare ok
-import defaultPFP from "@assets/img/defaultpfp.png"
+import defaultPFP from "@assets/img/defaultpfp.png";
 import { getAuth } from "@src/pages/helpers/firebase";
 
 const UserDropdown = () => {
@@ -20,14 +20,14 @@ const UserDropdown = () => {
   const closeDropdownPopover = () => {
     setDropdownPopoverShow(false);
   };
-  
+
   useEffect(() => {
     getAuth().then((s) => {
       // user must be loged in (in this state)
-      if (!s.user) return
-      setUserDispName(s.user.displayName ?? "Unknown")
-    })
-  }, [])
+      if (!s.user) return;
+      setUserDispName(s.user.displayName ?? "Unknown");
+    });
+  }, []);
 
   return (
     <>
@@ -84,9 +84,9 @@ const UserDropdown = () => {
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-red-700"
           }
           onClick={(e) => {
-            e.preventDefault()
+            e.preventDefault();
             chrome.storage.local.clear();
-            window.location.href = window.location.origin + "/login/index.html"
+            window.location.href = window.location.origin + "/login/index.html";
           }}
         >
           Logout

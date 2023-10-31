@@ -3,23 +3,25 @@ import { getArticles } from "@src/pages/helpers/firestore";
 import React, { useEffect, useState } from "react";
 
 type Article = {
-  id: string,
-  name: string,
-  url: string,
-  bias: string
-}
+  id: string;
+  name: string;
+  url: string;
+  bias: string;
+};
 
 // make dash predictions nice
-const mapToReadable = (predicition: "neutral" | "conservative" | "liberal" | string): string  => {
+const mapToReadable = (
+  predicition: "neutral" | "conservative" | "liberal" | string,
+): string => {
   switch (predicition) {
     case "conservative":
-      return "Conservative"
+      return "Conservative";
     case "liberal":
-      return "Liberal"
+      return "Liberal";
     default:
-      return "Neutral"
+      return "Neutral";
   }
-}
+};
 
 export default function CardPageVisits() {
   const [articles, setArticles] = useState<Article[] | null>(null);
@@ -29,20 +31,20 @@ export default function CardPageVisits() {
       // must be logged in
       if (!s.user) return;
       getArticles(s.user, firestore).then((qs) => {
-        let iArticles: Article[] = []
+        let iArticles: Article[] = [];
         qs.forEach((i) => {
           const d = i.data();
           iArticles.push({
             id: i.id,
             name: d.name,
             url: d.url,
-            bias: d.bias
-          })
-        })
-        setArticles(iArticles.reverse()) // reverse to get chronological order
+            bias: d.bias,
+          });
+        });
+        setArticles(iArticles.reverse()); // reverse to get chronological order
       });
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <>
@@ -84,18 +86,22 @@ export default function CardPageVisits() {
               </tr>
             </thead>
             <tbody>
-              {articles ? articles.map((article) => {
-                return (
-                  <tr key={article.id}>
-                    <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                      {article.name}
-                    </th>
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {mapToReadable(article.bias)}
-                    </td>
-                  </tr>
-                )
-              }) : <></>}
+              {articles ? (
+                articles.map((article) => {
+                  return (
+                    <tr key={article.id}>
+                      <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                        {article.name}
+                      </th>
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                        {mapToReadable(article.bias)}
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <></>
+              )}
             </tbody>
           </table>
         </div>
