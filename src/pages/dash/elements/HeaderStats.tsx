@@ -7,21 +7,7 @@ import { testConnectivity } from "@src/pages/helpers/api";
 // @ts-ignore Img declare ok
 import neutralGray from "@assets/img/neutral_grayt.png"
 import { getUserData } from "@src/pages/helpers/firestore";
-
-type UserData = {
-  conservative: number,
-  conservativePct: string,
-  neutral: number,
-  neutralPct: string,
-  liberal: number
-  liberalPct: string,
-}
-
-// remove nans on first load
-const nanify = (v: string) => {
-  if (v == "NaN") return "N/A"
-  return v
-}
+import { UserData, nanify } from "./helpers";
 
 export default function HeaderStats() {
   const [predictorOnline, setPredictorOnline] = useState<boolean | null>(null);

@@ -19,7 +19,7 @@ const app = initializeApp(firebaseConfig);
 // login handlers
 const auth = getAuth(app);
 
-type AuthState = {
+export type AuthState = {
   isLoggedIn: boolean
   auth: Auth
   user?: User
