@@ -17,6 +17,7 @@ type UserData = {
   liberalPct: string,
 }
 
+// remove nans on first load
 const nanify = (v: string) => {
   if (v == "NaN") return "N/A"
   return v
@@ -36,11 +37,11 @@ export default function HeaderStats() {
         const sum = stats.conservative + stats.neutral + stats.liberal;
         setUserData({
           conservative: stats.conservative,
-          conservativePct: nanify((stats.conservative / sum).toFixed(1)),
+          conservativePct: nanify((stats.conservative / sum * 100).toFixed(1)),
           neutral: stats.neutral,
-          neutralPct: nanify((stats.neutral / sum).toFixed(1)),
+          neutralPct: nanify((stats.neutral / sum * 100).toFixed(1)),
           liberal: stats.liberal,
-          liberalPct: nanify((stats.liberal / sum).toFixed(1)),
+          liberalPct: nanify((stats.liberal / sum * 100).toFixed(1)),
         })
       });
     })

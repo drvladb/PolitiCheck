@@ -9,6 +9,18 @@ type Article = {
   bias: string
 }
 
+// make dash predictions nice
+const mapToReadable = (predicition: "neutral" | "conservative" | "liberal" | string): string  => {
+  switch (predicition) {
+    case "conservative":
+      return "Conservative"
+    case "liberal":
+      return "Liberal"
+    default:
+      return "Neutral"
+  }
+}
+
 export default function CardPageVisits() {
   const [articles, setArticles] = useState<Article[] | null>(null);
 
@@ -79,7 +91,7 @@ export default function CardPageVisits() {
                       {article.name}
                     </th>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {article.bias}
+                      {mapToReadable(article.bias)}
                     </td>
                   </tr>
                 )
