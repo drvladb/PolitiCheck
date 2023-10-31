@@ -1,4 +1,4 @@
-const ENDPOINT = "http://localhost:5000"; // Dev: https://cac.vladb.xyz
+const ENDPOINT = "https://cac.vladb.xyz"; // Dev: http://localhost:5000
 
 const getPrediction = async (text: string): Promise<{ prediction: string }> => {
   return new Promise((resolve, reject) => {

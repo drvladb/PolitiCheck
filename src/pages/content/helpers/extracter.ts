@@ -19,6 +19,7 @@ const extractText = (webHost: string, pageContent: Document): Extraction => {
     case "www.nytimes.com": {
       return nytimesExtractor(pageContent);
     }
+    case "www.foxbusiness.com":
     case "www.foxnews.com": {
       return foxNewsExtractor(pageContent);
     }
