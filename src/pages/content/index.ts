@@ -26,8 +26,8 @@ const cleanUrl = (url: string): string => {
   await wait(2000); // make sure page loads
   const pageResults = extractText(window.location.host, document);
   if (pageResults.state == "success" && pageResults.article) {
-    // const prediction = await getPrediction(pageResults.article.content); // pretty fast (300ms) - server dead, quick replacement
-    const prediction = { prediction: "neutral" };
+    const prediction = await getPrediction(pageResults.article.content); // pretty fast (300ms) - server dead, quick replacement
+    // const prediction = { prediction: "neutral" };
     const rPrediction = mapPredicition(prediction.prediction);
     // inject
     injectBadge(window.location.host, rPrediction, document);
