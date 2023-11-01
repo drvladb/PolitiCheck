@@ -1,4 +1,5 @@
 import { Extraction } from "./Extraction";
+import { apnewsInjector } from "./injectors/apnews";
 import { cnnInjector } from "./injectors/cnn";
 import { foxNewsInjector } from "./injectors/foxnews";
 import { nyTimesInjector } from "./injectors/nytimes";
@@ -26,8 +27,14 @@ const injectBadge = (
       nyTimesInjector(bias, pageContent);
       break;
     }
+    case "www.foxbusiness.com":
     case "www.foxnews.com": {
       foxNewsInjector(bias, pageContent);
+      break;
+    }
+    case "www.apnews.com":
+    case "apnews.com": {
+      apnewsInjector(bias, pageContent);
       break;
     }
   }

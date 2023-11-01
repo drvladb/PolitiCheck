@@ -1,4 +1,5 @@
 import { Extraction } from "./Extraction";
+import { apnewsExtractor } from "./extracters/apnews";
 import { cnnExtractor } from "./extracters/cnn";
 import { foxNewsExtractor } from "./extracters/foxnews";
 import { nytimesExtractor } from "./extracters/nytimes";
@@ -22,6 +23,10 @@ const extractText = (webHost: string, pageContent: Document): Extraction => {
     case "www.foxbusiness.com":
     case "www.foxnews.com": {
       return foxNewsExtractor(pageContent);
+    }
+    case "apnews.com":
+    case "www.apnews.com": {
+      return apnewsExtractor(pageContent)
     }
   }
   return {
