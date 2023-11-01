@@ -1,12 +1,15 @@
 import { User } from "firebase/auth";
 import {
+  DocumentSnapshot,
   Firestore,
+  QuerySnapshot,
   Timestamp,
   collection,
   doc,
   getDoc,
   getDocs,
   limit,
+  onSnapshot,
   orderBy,
   query,
   setDoc,
@@ -70,7 +73,11 @@ const addArticle = async (
 const getArticles = async (user: User, db: Firestore, pointLimit = 5) => {
   const usersRef = collection(db, "users");
   const thisUserCollection = collection(usersRef, user.uid, "articles");
-  const q = query(thisUserCollection, orderBy("lastAccess"), limit(pointLimit));
+  const q = query(
+    thisUserCollection,
+    orderBy("lastAccess", "desc"),
+    limit(pointLimit),
+  );
   const querySnapshot = await getDocs(q);
   return querySnapshot;
 };
@@ -123,10 +130,36 @@ const addReadArticle = async (
   await addOneLifetimeStats(bias, user, db);
 };
 
+const statsSubscribe = async (
+  user: User,
+  db: Firestore,
+  callback: (doc: DocumentSnapshot) => any,
+) => {
+  return onSnapshot(doc(db, "users", user.uid), callback);
+};
+
+const articleSubscribe = async (
+  user: User,
+  db: Firestore,
+  callback: (doc: QuerySnapshot) => any,
+  pointLimit = 5,
+) => {
+  const usersRef = collection(db, "users");
+  const thisUserCollection = collection(usersRef, user.uid, "articles");
+  const q = query(
+    thisUserCollection,
+    orderBy("lastAccess", "desc"),
+    limit(pointLimit),
+  );
+  return onSnapshot(q, callback);
+};
+
 export {
   checkUserData,
   addReadArticle,
   getArticles,
   getUserData,
   addOneLifetimeStats,
+  statsSubscribe,
+  articleSubscribe,
 };

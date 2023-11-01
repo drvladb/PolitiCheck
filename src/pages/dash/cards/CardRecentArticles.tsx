@@ -1,5 +1,6 @@
 import { firestore, getAuth } from "@src/pages/helpers/firebase";
-import { getArticles } from "@src/pages/helpers/firestore";
+import { articleSubscribe, getArticles } from "@src/pages/helpers/firestore";
+import { QuerySnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 
 type Article = {
@@ -27,22 +28,26 @@ export default function CardPageVisits() {
   const [articles, setArticles] = useState<Article[] | null>(null);
 
   useEffect(() => {
+    const processArticles = (qs: QuerySnapshot) => {
+      let iArticles: Article[] = [];
+      qs.forEach((i) => {
+        const d = i.data();
+        iArticles.push({
+          id: i.id,
+          name: d.name,
+          url: d.url,
+          bias: d.bias,
+        });
+      });
+      setArticles(iArticles);
+    };
     getAuth().then((s) => {
       // must be logged in
       if (!s.user) return;
       getArticles(s.user, firestore).then((qs) => {
-        let iArticles: Article[] = [];
-        qs.forEach((i) => {
-          const d = i.data();
-          iArticles.push({
-            id: i.id,
-            name: d.name,
-            url: d.url,
-            bias: d.bias,
-          });
-        });
-        setArticles(iArticles.reverse()); // reverse to get chronological order
+        processArticles(qs);
       });
+      articleSubscribe(s.user, firestore, processArticles);
     });
   }, []);
 

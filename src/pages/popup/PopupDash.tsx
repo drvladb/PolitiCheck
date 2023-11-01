@@ -1,33 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { firestore, getAuth } from "../helpers/firebase";
-import { getUserData } from "../helpers/firestore";
+import { getUserData, statsSubscribe } from "../helpers/firestore";
 import { UserData, nanify } from "../dash/elements/helpers";
 import { testConnectivity } from "../helpers/api";
+import { DocumentSnapshot } from "firebase/firestore";
 
 export default function PopupDash(): JSX.Element {
   // only rendered if the user is logged in, firebase calls ok
   const [predictorOnline, setPredictorOnline] = useState<boolean | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
   useEffect(() => {
+    const processData = (qs: DocumentSnapshot) => {
+      const data = qs.data();
+      if (!data) return; // should never happen
+      const stats = data.stats.lifetime;
+      const sum = stats.conservative + stats.neutral + stats.liberal;
+      setUserData({
+        conservative: stats.conservative,
+        conservativePct: nanify(((stats.conservative / sum) * 100).toFixed(1)),
+        neutral: stats.neutral,
+        neutralPct: nanify(((stats.neutral / sum) * 100).toFixed(1)),
+        liberal: stats.liberal,
+        liberalPct: nanify(((stats.liberal / sum) * 100).toFixed(1)),
+      });
+    };
     getAuth().then((s) => {
       // must be logged in
       if (!s.user) return;
       getUserData(s.user, firestore).then((qs) => {
-        const data = qs.data();
-        if (!data) return; // should never happen
-        const stats = data.stats.lifetime;
-        const sum = stats.conservative + stats.neutral + stats.liberal;
-        setUserData({
-          conservative: stats.conservative,
-          conservativePct: nanify(
-            ((stats.conservative / sum) * 100).toFixed(1),
-          ),
-          neutral: stats.neutral,
-          neutralPct: nanify(((stats.neutral / sum) * 100).toFixed(1)),
-          liberal: stats.liberal,
-          liberalPct: nanify(((stats.liberal / sum) * 100).toFixed(1)),
-        });
+        processData(qs);
       });
+      statsSubscribe(s.user, firestore, processData);
     });
     testConnectivity()
       .then((d) => {
